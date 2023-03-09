@@ -5,21 +5,20 @@ import "./libraries/OracleLibrary.sol";
 import "./interfaces/IUniswapV3Factory.sol";
 import "./interfaces/IUniswapV3Pool.sol";
 
-/// @title OracleGuard - oracle extension favoring safety over liveness.
+/// @title OracleGuard - oracle extension favoring safety over liveness
 /// @notice Guard removes outliers and returns the Observed Average Price (OAT)
 contract OracleGuard {
     IUniswapV3Factory public constant UNISWAP_V3_FACTORY = IUniswapV3Factory(0x1F98431c8aD98523631AE4a59f267346ea31F984);
     uint24[] internal _knownFeeTiers = [500, 3000, 10000, 100];  
     uint8 public constant OBSERVATIONS = 28; 
     uint8 public constant MAX_OUTLIERS = 4;
+    uint8 public constant SKIP = 4;
     // Check OBSERVATIONS + 1 tickCumulatives to calculate OBSERVATION number of ticks
     uint8 public constant CHECKS = OBSERVATIONS + 1; 
     // Cap on max change from tick to tick 
     int24 public constant MAX_SINGLE_TICK_DELTA = 142; 
-    // Cap on the total change within range of tickchanges = 900 ~= 10% max price change in total observation
+    // Cap on the total change within range of tickchanges = 900 ~= 10% max change 
     int56 public constant MAX_TOTAL_TICK_DELTA = 900; 
-    // Skip factor to allow passing multiple epochs of observations:
-    uint8 public constant SKIP = 4;
 
     struct TickData {
         int56 tick_latest;

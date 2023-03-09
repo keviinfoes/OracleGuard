@@ -8,7 +8,7 @@ OracleGuard is a modular UniswapV3 oracle extension that favors safety over live
 * [License](#License)
 
 ## Background
-UniswapV3 integrates a time-weighted average price (TWAP) oracle. To calculate the TWAP the pool stores ticks on price changes or liquidity changes. The current main oracle protection is that ticks are stored on changes between blocks, not within blocks. This mitigates flashloan manipulations and under POW also mitigates wash trading manipulations. Wash trading is mitigated by the arbitrage risk during the execution of the wash trade. For more info on the oracle risks under POW see [this](https://github.com/euler-xyz/uni-v3-twap-manipulation) paper by micheal Bentley.
+UniswapV3 integrates a time-weighted average price (TWAP) oracle. To calculate the TWAP the pool stores ticks on price changes or liquidity changes. The current main oracle protection is that ticks are stored on changes between blocks, not within blocks. This mitigates flashloan manipulations and under POW also mitigates wash trading manipulations. Wash trading is mitigated by the arbitrage risk during the execution of the wash trade. For more info on the oracle risks under POW see [this](https://github.com/euler-xyz/uni-v3-twap-manipulation) paper by Micheal Bentley.
 
 The transition of Ethereum mainnet from POW to Proof of Stake (PoS) resulted in significant changes in block building. This in turn results in reduction of the arbitrage risk for oracle manipulators because validators can produce consecutive blocks and validators know in advance (~max 2 epochs) the blocks they will propose. With consecutive blocks the validator can order txt in a way that removes the arbitrage risk for oracle manipulation. The higher the market share of a validator the higher the probability of consecutive blocks. See [this](https://alrevuelta.github.io/posts/ethereum-mev-multiblock) paper by Alvaro Revuelta for info on the probability of consecutive blocks per marketshare of a validator. For the effect of consecutive proposals on the UniswapV3 TWAP oracle see [this](https://uniswap.org/blog/uniswap-v3-oracles) research by Austin Adams, Xin Wan, and Noah Zinsmeister.
 
@@ -22,9 +22,9 @@ OracleGuard is a seperate smart contract that checks a set number of `OBSERVATIO
 OracleGuard uses the following boundaries:
 1. `OBSERVATIONS` the number of tick observations;
 2. `MAX_OUTLIERS` the max number of ticks that are out of range;
+3. `SKIP` the step between two observations. This is used to pass multiple epochs without needing to check 32 observations per epoch.
 4. `MAX_SINGLE_TICK_DELTA` the max difference between the previous stored tick in the array and the current observed tick;
 5. `MAX_TOTAL_TICK_DELTA` the max difference in the array with the most observed ticks.
-6. `SKIP` the step between two observations. This is used to pass multiple epochs without needing to check 32 observations per epoch.
 
 These variables can be set to favor safety or liveness. More `OBSERVATIONS` are safer and more `MAX_OUTLIERS` increases liveness at the cost of `OBSERVATIONS` (safety). Another consideration besides safety and liveness is gascost, see [Gascost](#Gascost).
 

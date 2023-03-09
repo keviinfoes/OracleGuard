@@ -79,12 +79,12 @@ contract('oracleGuard_test', async accounts => {
 		it("Should fail when there are more then MAX_OUTLIERS (single tick delta fail)", async () => {
 			//Change array to include attack outliers > MAX_OUTLIERS 
 			let SKIP = await oracleGuard.SKIP()
+			let MAX_OUTLIERS = await oracleGuard.SKIP()
 			let currentBlock = await web3.eth.getBlock("latest")
 			let start = tickCumulative.length - 1
-			//Adjust 5 times SKIP cumulatives -> because 4 outliers are allowed
-			let end = tickCumulative.length - 5 * SKIP
+			let end = tickCumulative.length - (MAX_OUTLIERS + 1) * SKIP
 			for (let x = start; x > end; x--){
-				tickCumulative[x] = -10000 * x * currentBlock.timestamp
+				tickCumulative[x] = -100000 * currentBlock.timestamp - ((-100000 - 1000 * x) * 12 * x)
 			}
 			//Add testinput to mockpool	
 			await mockPool.removeObservations()
@@ -94,17 +94,20 @@ contract('oracleGuard_test', async accounts => {
 			quotetoken = usdc
 			let quote = await oracleGuard.getQuoteSinglePool(mockPool.address, amount, basetoken, quotetoken)
 			let alive = quote[0]
-			assert(alive == false, "OracleGuard dit not halt single tick delta")
+			assert(alive == false, "OracleGuard dit not halt single tick delta")		
 		})
 		it("Should fail when total delta ticks > MAX_TOTAL_TICK_DELTA)", async () => {
 			//Change array to include attack 
+			let max_delta = await oracleGuard.MAX_TOTAL_TICK_DELTA()
+			let observations = await oracleGuard.OBSERVATIONS()
+			let SKIP = await oracleGuard.SKIP()
 			let currentBlock = await web3.eth.getBlock("latest")
 			blockTimestamp = []
 			tickCumulative = [] 
-			for (let i = 100; i > 0; i--) { 
+			for (let i = 150; i > 0; i--) { 
 				blockTimestamp.push(currentBlock.timestamp - (12 * i)) 
 				//Change diff to > MAX_TOTAL_TICK_DELTA
-				tickCumulative.push(203155 * currentBlock.timestamp - ((203155 - 6 * i) * 12 * i))  
+				tickCumulative.push(203155 * currentBlock.timestamp - ((203155 - (parseInt(max_delta / (observations * SKIP))) * i) * 12 * i))  
 			}
 			//Add testinput to mockpool	
 			await mockPool.removeObservations()
