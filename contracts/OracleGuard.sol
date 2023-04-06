@@ -15,10 +15,8 @@ contract OracleGuard {
     uint8 public constant SKIP = 4;
     // Check OBSERVATIONS + 1 tickCumulatives to calculate OBSERVATION number of ticks
     uint8 public constant CHECKS = OBSERVATIONS + 1; 
-    // Cap on max change from tick to tick 
-    int24 public constant MAX_SINGLE_TICK_DELTA = 142; 
     // Cap on the total change within range of tickchanges = 900 ~= 10% max change 
-    int56 public constant MAX_TOTAL_TICK_DELTA = 900; 
+    int56 public constant MAX_TICK_DELTA = 900; 
 
     struct TickData {
         int56 tick_latest;
@@ -79,7 +77,7 @@ contract OracleGuard {
                 int56 tick = isub56(tickCumulative, previousCumulative) / (timestamp - previousTimestamp);
                 int56 delta = isub56(tick, ticksArrays[x].tick_latest);
                 // Check if the current tick is in range of any stored ticks
-                if(ticksArrays[x].observed > 0 && delta <= MAX_SINGLE_TICK_DELTA && delta >= -MAX_SINGLE_TICK_DELTA){
+                if(ticksArrays[x].observed > 0 && delta <= MAX_TICK_DELTA && delta >= -MAX_TICK_DELTA){
                     // When current storage used and tick within range add to data
                     ticksArrays[x].tick_latest = tick;
                     ticksArrays[x].tick_diff_sum = iadd56(ticksArrays[x].tick_diff_sum, delta);
@@ -114,7 +112,7 @@ contract OracleGuard {
             }
         }
         // Error -> outside max tick delta, fail by returning 0 observations
-        if(tickdeltasum >= MAX_TOTAL_TICK_DELTA || tickdeltasum <= -MAX_TOTAL_TICK_DELTA) {return (0, 0);}
+        if(tickdeltasum >= MAX_TICK_DELTA || tickdeltasum <= -MAX_TICK_DELTA) {return (0, 0);}
         // Calculate the mean OAT over all the observations
         int56 totalOAT = observed > 1 ? int56(ticksum / observed): 0;
         return (totalOAT, observed);
