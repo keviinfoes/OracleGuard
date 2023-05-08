@@ -5,6 +5,7 @@ OracleGuard is a modular UniswapV3 oracle extension that favors safety over live
 * [Description](#Description)
 * [Gascost](#Gascost)
 * [Test](#Test)
+* [Analyses](#Analyses)
 * [License](#License)
 
 ## Background
@@ -41,6 +42,14 @@ ganache-cli --fork [node_address || Alchemy URL || Infura URL]
 // Terminal 2
 truffle test --network mainfork
 ```
+
+## Analyses
+The difference between a regular 30 min TWAP quote is compared to the OracleGuard quote for the period december 2021 - march 2023. The comparisson is visible in graph 1. This shows that the oracle guard quote is comparible to the regular quote. Further that no halting of the oracle guard under these conditions has happend. 
+
+![Scherm­afbeelding 2023-04-06 om 15 18 07](https://user-images.githubusercontent.com/5862753/230396608-bf017801-2d46-437f-9540-f43210db1eca.png)
+<sub>Graph 1 - `MAX_TOTAL_TICK_DELTA` 1800 (~= 20% price change)</sub> 
+
+It is possible for the OracleGuard to halt price updates without an oracle attack, in this case during a market price drops >20%. These drops however are rare, as shown by the historic data that does not contain such an event for >2 years for ETH/USDC. In addition drops >20% are short periods of extreme volatility. During these "price discovery" periods it is better for the oracle to shortly halt price updates until the new price is discovered, to mitigate risks for the underlying protocols using the price.    
 
 ## License
 OracleGuard is licensed under `GPL-2.0-or-later`.
