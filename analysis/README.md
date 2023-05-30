@@ -8,7 +8,7 @@ The analyses is performed on the relative stable ETH/USDC pair and the relative 
 ## ETH/USDC pair
 
 ### Multi pool 10% max delta
-Source: [ETH/USDC multi pool 10% analayses](https://github.com/keviinfoes/OracleGuard/tree/main/historic_analysis/output/ETH%3AUSDC/MULTI-o28_m4_s4-STD1800_MTD1800)
+Source: [ETH/USDC multi pool 10% analayses](https://github.com/keviinfoes/OracleGuard/tree/main/analysis/output/ETH%3AUSDC/MULTI-pools-%5B0%5D-%5B1%5D-%5B2%5D/o28_m4_s4-STD1800_MTD1800)
 
 ![multi pool 10%](https://github.com/keviinfoes/OracleGuard/blob/main/analysis/assets/eth%3Ausdc-multi-pool-10%25.png)
 <sub>Graph 1 - `MAX_TOTAL_TICK_DELTA` 900 (~= 10% price change), `OBSERVATIONS` 28</sub> 
@@ -22,7 +22,7 @@ The data shows no halting of the price update in this volatile period. Further i
 <sub>Graph 2 - coinmarketcap ETH/USDC</sub> 
 
 ### Single pool 20% max delta
-Source: [ETH/USDC single pool 20% analayses](https://github.com/keviinfoes/OracleGuard/tree/main/historic_analysis/output/ETH%3AUSDC/pools%5B1%5D-0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8/o28_m4_s4-STD568_MTD1800)
+Source: [ETH/USDC single pool 20% analayses](https://github.com/keviinfoes/OracleGuard/tree/main/analysis/output/ETH%3AUSDC/pools%5B1%5D-0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8/o28_m4_s4-STD568_MTD1800)
 
 ![single pool 20%](https://github.com/keviinfoes/OracleGuard/blob/main/analysis/assets/eth%3Ausdc-pool%5B1%5D-20%25.png)
 <sub>Graph 3 - `MAX_TOTAL_TICK_DELTA` 1800 (~= 20% price change), `OBSERVATIONS` 28</sub> 
@@ -32,7 +32,7 @@ The difference between a regular 30 min TWAP quote is compared to the OracleGuar
 ## SHIBA/ETH pair
 
 ### Single pool 10% max delta
-Source: Source: [SHIBA/ETH single pool 10% analayses](https://github.com/keviinfoes/OracleGuard/tree/main/historic_analysis/output/SHIBA%3AETH/pools%5B1%5D-0x5764a6F2212D502bC5970f9f129fFcd61e5D7563)
+Source: Source: [SHIBA/ETH single pool 10% analayses](https://github.com/keviinfoes/OracleGuard/tree/main/analysis/output/SHIBA%3AETH/pools%5B1%5D-0x5764a6F2212D502bC5970f9f129fFcd61e5D7563/o22_m4_s4-STD900_MTD900)
 
 ![single pool 10%](https://github.com/keviinfoes/OracleGuard/blob/main/analysis/assets/shiba%3Aeth-pool%5B1%5D-10%25.png)
 <sub>Graph 4 - `MAX_TOTAL_TICK_DELTA` 900 (~= 10% price change), `OBSERVATIONS` 22</sub> 
@@ -43,7 +43,7 @@ Note that halting only refers to price updates, not the entire dapp that uses th
 The OracleGuard updates every 12 seconds and during this period paused updates only for a total of 5 hours for a highly volatile asset during its most volatile period to date. For comparisson the chainlink ETH/USDC oracle updates only once every hour (or movement >10%). 
 
 ### Single pool 20% max delta
-Source: Source: [SHIBA/ETH single pool 20% analayses]()
+Source: Source: [SHIBA/ETH single pool 20% analayses](https://github.com/keviinfoes/OracleGuard/tree/main/analysis/output/SHIBA%3AETH/pools%5B1%5D-0x5764a6F2212D502bC5970f9f129fFcd61e5D7563/o22_m4_s4-STD1800_MTD1800)
 
 ![single pool 20%](https://github.com/keviinfoes/OracleGuard/blob/main/analysis/assets/shiba%3Aeth-pool%5B1%5D-20%25.png)
 <sub>Graph 5 - `MAX_TOTAL_TICK_DELTA` 1800 (~= 20% price change), `OBSERVATIONS` 22</sub> 
