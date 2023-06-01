@@ -4,5 +4,5 @@ const OracleGuard = artifacts.require("OracleGuard");
 
 module.exports = function (deployer) {
   deployer.deploy(Migrations);
-  deployer.deploy(OracleGuard);
+  deployer.deploy(OracleGuard, 28, 4, 4, 900);
 };

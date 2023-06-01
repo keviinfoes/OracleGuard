@@ -18,7 +18,7 @@ Note that under POS the oracle manipulator still pays the market fee for the man
 ## Description
 The goal is to mitigate the risk of oracle manipulation without the need for a change in UniswapV3 or the need for Ethereum protocol changes. The result is the here proposed OracleGuard. 
 
-OracleGuard is a seperate smart contract that checks a set number of `OBSERVATIONS` and removes outliers based on a defined `MAX_SINGLE_TICK_DELTA` between  ticks. If there are more than `MAX_OUTLIERS` the guard halts the price update. If there are less then `MAX_OUTLIERS` it returns the average of the observations without outliers. This method favors safety over liveness. To manipulate the price outside of the `MAX_TOTAL_TICK_DELTA` range a manipulator needs `manipulated observations > OBSERVATIONS - MAX_OUTLIERS`. To halt price updates the manipulator needs `manipulated observations > MAX_OUTLIERS`.
+OracleGuard is a seperate smart contract that checks a set number of `OBSERVATIONS` and removes outliers based on a defined `MAX_SINGLE_TICK_DELTA` between  ticks. If there are more than `MAX_OUTLIERS` the guard pauses the price update. If there are less then `MAX_OUTLIERS` it returns the average of the observations without outliers. This method favors safety over liveness. To manipulate the price outside of the `MAX_TOTAL_TICK_DELTA` range a manipulator needs `manipulated observations > OBSERVATIONS - MAX_OUTLIERS`. To pause price updates the manipulator needs `manipulated observations > MAX_OUTLIERS`.
 
 OracleGuard uses the following boundaries:
 1. `OBSERVATIONS` the number of tick observations;
@@ -33,7 +33,7 @@ These variables can be set to favor safety or liveness. More `OBSERVATIONS` are 
 The testscript estimates the gascosts for `OBSERVATIONS=28 && MAX_OUTLIERS=4` ~200k gas. In this case the oracle manipulator needs to controle 22 observations (44 blocks, observation manipulation requires two consecutive blocks). See [Test](#Test) to run the gascost estimate.
 
 ## Test
-The tests use the ganache mainnet fork option.
+The tests use the ganache mainnet fork option (for gasestimate against regular TWAP oracle).
 
 ```
 // Terminal 1
@@ -44,7 +44,7 @@ truffle test --network mainfork
 ```
 
 ## Analyses
-We analyse the difference between the OraceleGuard quote and the regular TWAP implementation quote, including the impact of halting price updates for historic observations. See [historic analyses](https://github.com/keviinfoes/OracleGuard/tree/main/historic_analysis). 
+We analyse the difference between the OraceleGuard quote and the regular TWAP implementation quote, including the impact of paused price updates for historic observations. See [historic analyses](https://github.com/keviinfoes/OracleGuard/tree/main/historic_analysis). 
 
 ## License
 OracleGuard is licensed under `GPL-2.0-or-later`.
