@@ -30,7 +30,9 @@ OracleGuard uses the following boundaries:
 These variables can be set to favor safety or liveness. More `OBSERVATIONS` are safer and more `MAX_OUTLIERS` increases liveness at the cost of `OBSERVATIONS` (safety). Another consideration besides safety and liveness is gascost, see [Gascost](#Gascost).
 
 ## Gascost
-The testscript estimates the gascosts for `OBSERVATIONS=28 && MAX_OUTLIERS=4` ~200k gas. In this case the oracle manipulator needs to controle 22 observations (44 blocks, observation manipulation requires two consecutive blocks). See [Test](#Test) to run the gascost estimate.
+The testscript estimates the gascosts for `OBSERVATIONS=18 && MAX_OUTLIERS=4` ~150k gas. Every observation is around 5k gas, meaning 17 observations ~145k gas and 19 observations ~155k gas. This is comperable in cost to the gascost of the TWAP oracle without OracleGuard.
+
+In the case of `OBSERVATIONS=18 && MAX_OUTLIERS=4` the oracle manipulator needs to controle a minimum of 14 observations. For `SKIP > 2` this results in a minimal of `1.5 * 14 = 21` blocks needed for price manipulation. See [Test](#Test) to run the gascost estimate.
 
 ## Test
 The tests use the ganache mainnet fork option (for gasestimate against regular TWAP oracle).
@@ -44,7 +46,7 @@ truffle test --network mainfork
 ```
 
 ## Analyses
-We analyse the difference between the OraceleGuard quote and the regular TWAP implementation quote, including the impact of paused price updates for historic observations. See [historic analyses](https://github.com/keviinfoes/OracleGuard/tree/main/historic_analysis). 
+We analyse the difference between the OracleGuard quote and the regular TWAP implementation quote, including the impact of paused price updates for historic observations. See [historic analyses](https://github.com/keviinfoes/OracleGuard/tree/main/historic_analysis). 
 
 ## License
 OracleGuard is licensed under `GPL-2.0-or-later`.
